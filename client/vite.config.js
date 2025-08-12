@@ -6,8 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   define: {
-    global: 'globalThis',  // 👈 this line is critical
-    'process.env': {},     // optional but safe
+    global: 'globalThis',  
+    'process.env': {},  
   },
 })
   

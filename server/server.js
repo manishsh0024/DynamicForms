@@ -10,10 +10,7 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: "https://dynamicforms-1-kk50.onrender.com",
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json()); // for parsing JSON
 
 // API routes
