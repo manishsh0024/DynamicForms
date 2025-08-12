@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { v4 as uuid } from "uuid";
-import ToolboxItem from "./ToolboxItem";
+import ToolboxItem from "./ToolBoxItem";
 import DroppableZone from "./DraggableZone";
 import FormPreview from "./FormPreview";
 import axios from "../axios";
