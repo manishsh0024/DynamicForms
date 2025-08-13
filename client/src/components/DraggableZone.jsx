@@ -5,9 +5,7 @@ import { Droppable, Draggable } from "@hello-pangea/dnd";
 const DroppableZone = ({ formElements, setFormElements }) => {
   const updateLabel = (uuid, newLabel) => {
     setFormElements((prev) =>
-      prev.map((el) =>
-        el.uuid === uuid ? { ...el, label: newLabel } : el
-      )
+      prev.map((el) => (el.uuid === uuid ? { ...el, label: newLabel } : el))
     );
   };
 
@@ -17,9 +15,7 @@ const DroppableZone = ({ formElements, setFormElements }) => {
         el.uuid === uuid
           ? {
               ...el,
-              options: el.options.map((opt, i) =>
-                i === index ? newValue : opt
-              ),
+              options: el.options.map((opt, i) => (i === index ? newValue : opt)),
             }
           : el
       )
@@ -40,16 +36,12 @@ const DroppableZone = ({ formElements, setFormElements }) => {
     setFormElements((prev) =>
       prev.map((el) =>
         el.uuid === uuid
-          ? {
-              ...el,
-              options: el.options.filter((_, i) => i !== index),
-            }
+          ? { ...el, options: el.options.filter((_, i) => i !== index) }
           : el
       )
     );
   };
 
-  // New function to remove a field
   const removeElement = (uuid) => {
     setFormElements((prev) => prev.filter((el) => el.uuid !== uuid));
   };
@@ -58,20 +50,20 @@ const DroppableZone = ({ formElements, setFormElements }) => {
     <Droppable droppableId="dropzone">
       {(provided) => (
         <div
-          className="flex-1 bg-white shadow p-4 rounded min-h-[500px]"
+          className="flex-1 bg-gray-50 shadow-md p-4 rounded-xl min-h-[500px] border border-gray-200"
           {...provided.droppableProps}
           ref={provided.innerRef}
         >
-          <h2 className="text-lg font-bold mb-3">📄 Form Canvas</h2>
+          <h2 className="text-lg font-bold mb-3 text-gray-700">Canvas</h2>
           {formElements.length === 0 && (
-            <p className="text-gray-400">Drag form fields here</p>
+            <p className="text-gray-400 text-sm italic">Drag form fields here</p>
           )}
 
           {formElements.map((item, index) => (
             <Draggable draggableId={item.uuid} index={index} key={item.uuid}>
               {(provided) => (
                 <div
-                  className="mb-3 border border-gray-300 p-3 rounded bg-gray-50 relative"
+                  className="mb-4 border border-gray-200 p-4 rounded-lg bg-white shadow-sm relative hover:shadow-md transition-all"
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
@@ -79,29 +71,38 @@ const DroppableZone = ({ formElements, setFormElements }) => {
                   {/* Delete button */}
                   <button
                     onClick={() => removeElement(item.uuid)}
-                    className="absolute top-2 right-2 text-red-600 font-bold"
+                    className="absolute top-2 right-2 text-red-500 hover:text-white font-bold text-lg bg-black px-3 rounded-md"
                   >
                     ✕
                   </button>
 
+                  {/* Label Input */}
                   <input
                     value={item.label}
                     onChange={(e) => updateLabel(item.uuid, e.target.value)}
-                    className="block text-sm font-medium mb-2 border-b w-full"
+                    className="block text-sm font-medium mb-3 border-b border-gray-300 focus:border-blue-500 outline-none w-full pb-1"
                   />
 
+                  {/* Field Types */}
                   {item.type === "text" && (
-                    <input className="border px-2 py-1 w-full" type="text" disabled />
+                    <input
+                      className="border border-gray-300 px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      type="text"
+                      disabled
+                    />
                   )}
 
                   {item.type === "textarea" && (
-                    <textarea className="border px-2 py-1 w-full" disabled />
+                    <textarea
+                      className="border border-gray-300 px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      disabled
+                    />
                   )}
 
                   {(item.type === "select" || item.type === "radio") && (
                     <div>
                       {item.options.map((opt, i) => (
-                        <div key={i} className="flex gap-2 items-center mb-1">
+                        <div key={i} className="flex gap-2 items-center mb-2">
                           {item.type === "radio" ? (
                             <input type="radio" disabled />
                           ) : (
@@ -109,12 +110,14 @@ const DroppableZone = ({ formElements, setFormElements }) => {
                           )}
                           <input
                             value={opt}
-                            onChange={(e) => updateOption(item.uuid, i, e.target.value)}
-                            className="border px-2 py-1 w-full"
+                            onChange={(e) =>
+                              updateOption(item.uuid, i, e.target.value)
+                            }
+                            className="border border-gray-300 px-3 py-1 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
                           />
                           <button
                             onClick={() => removeOption(item.uuid, i)}
-                            className="text-red-600 font-bold"
+                            className="text-red-500 hover:text-red-700 font-bold"
                           >
                             ✕
                           </button>
@@ -122,51 +125,68 @@ const DroppableZone = ({ formElements, setFormElements }) => {
                       ))}
                       <button
                         onClick={() => addOption(item.uuid)}
-                        className="text-sm text-blue-600 mt-1"
+                        className="text-sm text-blue-600 hover:underline mt-1"
                       >
                         ➕ Add Option
                       </button>
                     </div>
                   )}
+
                   {item.type === "checkbox" && (
-  <div>
-    {item.options.map((opt, i) => (
-      <div key={i} className="flex items-center gap-2 mb-1">
-        <input type="checkbox" disabled />
-        <input
-          value={opt}
-          onChange={(e) => updateOption(item.uuid, i, e.target.value)}
-          className="border px-2 py-1 w-full"
-        />
-        <button
-          onClick={() => removeOption(item.uuid, i)}
-          className="text-red-600 font-bold"
-        >
-          ✕
-        </button>
-      </div>
-    ))}
-    <button
-      onClick={() => addOption(item.uuid)}
-      className="text-sm text-blue-600 mt-1"
-    >
-      ➕ Add Option
-    </button>
-  </div>
-)}
+                    <div>
+                      {item.options.map((opt, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center gap-2 mb-2"
+                        >
+                          <input type="checkbox" disabled />
+                          <input
+                            value={opt}
+                            onChange={(e) =>
+                              updateOption(item.uuid, i, e.target.value)
+                            }
+                            className="border border-gray-300 px-3 py-1 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                          />
+                          <button
+                            onClick={() => removeOption(item.uuid, i)}
+                            className="text-red-500 hover:text-red-700 font-bold"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        onClick={() => addOption(item.uuid)}
+                        className="text-sm text-blue-600 hover:underline mt-1"
+                      >
+                        ➕ Add Option
+                      </button>
+                    </div>
+                  )}
 
-{item.type === "email" && (
-  <input className="border px-2 py-1 w-full" type="email" disabled />
-)}
+                  {item.type === "email" && (
+                    <input
+                      className="border border-gray-300 px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      type="email"
+                      disabled
+                    />
+                  )}
 
-{item.type === "date" && (
-  <input className="border px-2 py-1 w-full" type="date" disabled />
-)}
+                  {item.type === "date" && (
+                    <input
+                      className="border border-gray-300 px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      type="date"
+                      disabled
+                    />
+                  )}
 
-{item.type === "number" && (
-  <input className="border px-2 py-1 w-full" type="number" disabled />
-)}
-
+                  {item.type === "number" && (
+                    <input
+                      className="border border-gray-300 px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      type="number"
+                      disabled
+                    />
+                  )}
                 </div>
               )}
             </Draggable>

@@ -7,10 +7,13 @@ const ToolboxItem = ({ item, index }) => {
     <Draggable draggableId={item.id} index={index}>
       {(provided) => (
         <div
-          className="bg-blue-100 border border-blue-400 rounded px-3 py-2 mb-2 cursor-move"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white 
+                     rounded-lg px-4 py-3 mb-3 cursor-move shadow-md 
+                     hover:shadow-lg hover:scale-105 transition-all duration-200 
+                     font-medium tracking-wide"
         >
           {item.label}
         </div>

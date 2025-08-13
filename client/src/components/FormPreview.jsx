@@ -4,7 +4,7 @@ import React from "react";
 const FormPreview = ({ formElements }) => {
   return (
     <div className="p-6 bg-white rounded shadow min-h-[500px]">
-      <h2 className="text-xl font-bold mb-4">🧾 Preview Mode</h2>
+      <h2 className="text-xl font-bold mb-4">Form Preview</h2>
       <form className="space-y-4">
         {formElements.map((item) => (
           <div key={item.uuid}>
